@@ -1,3 +1,4 @@
 .vscode/
 testVenv/
 __pycache__/
+migrations

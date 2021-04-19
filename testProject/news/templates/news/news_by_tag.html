@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Новости
+  {{tag.name}} | Новости по тегу
 {% endblock title %}
 
 {% block main %}
+    <h1>Новости по тегу "{{tag.name}}"</h1>
     {% for article in news %}
     <div class="card">
       <div class="card-header">
