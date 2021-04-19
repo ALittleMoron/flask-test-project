@@ -1,11 +1,10 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Новости
+{{article.title}} | Новость на сайте
 {% endblock title %}
 
 {% block main %}
-    {% for article in news %}
     <div class="card">
       <div class="card-header">
         Категория:
@@ -13,8 +12,8 @@
       <div class="card-body">
         <h5 class="card-title">{{ article.title }}</h5>
         <p class="card-text">{{ article.synopsis }}</p>
-        <a href="{{ url_for('news.detail_article', slug=article.slug) }}" class="btn btn-primary">Подробнее</a>
+        <text class="card-text">{{article.text }}</text>
+        <a href="{{ url_for('news.news_page') }}" class="btn btn-primary">Обратно к новостям</a>
       </div>
     </div>
-    {% endfor %}
 {% endblock main %}
