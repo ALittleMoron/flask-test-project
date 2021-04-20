@@ -27,7 +27,7 @@ def add_article():
         return redirect(url_for('news.news_page'))
     else:
         form = ArticleForm()
-    return render_template('news/add_article.html', form=form)
+    return render_template('news/add_article.html', article=article, form=form)
 
 
 @news.route('/update-article/<slug>', methods=["POST", "GET"])
@@ -41,7 +41,7 @@ def update_article(slug):
         return redirect(url_for('news.detail_article', slug=article.slug))
     else:
         form = ArticleForm(obj=article)
-        return render_template('news/edit.html', form=form)
+        return render_template('news/edit.html', article=article, form=form)
 
 
 @news.route('/')
