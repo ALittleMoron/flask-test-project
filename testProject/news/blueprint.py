@@ -53,7 +53,7 @@ def news_page():
     else:
         page = 1
     if q:
-        news = Article.query.filter(Article.title.contains(q) | Article.text.contains(q)).all()
+        news = Article.query.filter(Article.title.contains(q) | Article.text.contains(q))
     else:
         news = Article.query.order_by(Article.created_at.desc())
     pages = news.paginate(page=page, per_page=5)
