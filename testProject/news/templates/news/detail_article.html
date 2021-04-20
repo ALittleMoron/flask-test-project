@@ -19,6 +19,7 @@
         <p class="card-text">{{ article.synopsis }}</p>
         <text class="card-text">{{article.text }}</text><br><br>
         <a href="{{ url_for('news.news_page') }}" class="btn btn-primary">Обратно к новостям</a>
+        <a href="{{ url_for('news.update_article', slug=article.slug) }}" class='btn btn-warning'>Изменить содержание</a>
       </div>
     </div>
 {% endblock main %}

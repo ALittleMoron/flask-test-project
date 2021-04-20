@@ -30,15 +30,35 @@ def add_article():
     return render_template('news/add_article.html', form=form)
 
 
+@news.route('/update-article/<slug>', methods=["POST", "GET"])
+def update_article(slug):
+    article = Article.query.filter(Article.slug==slug).first()
+
+    if request.method == 'POST':
+        form = ArticleForm(formdata=request.form, obj=article)
+        form.populate_obj(article)
+        db.session.commit()
+        return redirect(url_for('news.detail_article', slug=article.slug))
+    else:
+        form = ArticleForm(obj=article)
+        return render_template('news/edit.html', form=form)
+
+
 @news.route('/')
 def news_page():
     q = request.args.get('q')
-    print(q)
+    page = request.args.get('page')
+    if page and page.isdigit():
+        page = int(page)
+    else:
+        page = 1
     if q:
         news = Article.query.filter(Article.title.contains(q) | Article.text.contains(q)).all()
     else:
-        news = Article.query.all()
-    return render_template('news/news.html', news=news)
+        news = Article.query.order_by(Article.created_at.desc())
+    pages = news.paginate(page=page, per_page=5)
+    
+    return render_template('news/news.html', news=news, pages=pages)
 
 
 @news.route('/<slug>')
