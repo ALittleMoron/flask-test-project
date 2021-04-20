@@ -1,9 +1,33 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, redirect, url_for
 
 from models import Article, Tag, Category
+from app import db
+from .forms import ArticleForm
+
 
 news = Blueprint('news', __name__, template_folder='templates',
                  static_folder='static')
+
+
+@news.route('/add-article', methods=['POST', 'GET'])
+def add_article():
+    if request.method == 'POST':
+        title = request.form['title']
+        synopsis = request.form['synopsis']
+        text = request.form['text']
+        
+        try:
+            article = Article(title=title, synopsis=synopsis, text=text)
+            
+            db.session.add(article)
+            db.session.commit()
+        except Exception as e:
+            print('Something went wrong...')
+            print(e)
+        return redirect(url_for('news.news_page'))
+    else:
+        form = ArticleForm()
+    return render_template('news/add_article.html', form=form)
 
 
 @news.route('/')
@@ -29,8 +53,3 @@ def news_by_tag(slug):
     tag = Tag.query.filter(Tag.slug==slug).first()
     news = tag.articles
     return render_template('news/news_by_tag.html', tag=tag, news=news)
-
-
-@news.route('/add-article')
-def add_article():
-    return render_template('news/add_article.html')

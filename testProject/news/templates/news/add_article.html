@@ -5,4 +5,15 @@
 {% endblock title %}
 
 {% block main %}
+<div class='mt-4 col-md-6'>
+<form action="{{ url_for('news.add_article') }}" method='POST'>
+  {% for field in form %}
+    <div class="form-group">
+      {{field.label(class='control-label')}}
+      {{field(class='form-control')}}
+    </div>
+  {% endfor %}
+    <br><button type='submit' class='btn btn-success'>Добавить</button>
+</form>
+</div>
 {% endblock main %}
