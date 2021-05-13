@@ -1,0 +1,27 @@
+{% extends 'base_elgamal.html' %}
+
+
+{% block body %}
+<div class="container mt-5">
+  <div class="row mt-5">
+    <div class='mt-5 col-6 offset-3  border border-2 rounded-3 border-secondary'>
+      <h3 align='center'>Результат</h3>
+     {% if result %}
+      <p>Зашифрованное сообщение - {{result.result}}</p>
+      {%if result.private_keys %}
+        <p>Ключи - {{result.private_keys}}</p>
+      {% elif result.public_keys %}
+        <p>Ключи - {{result.public_keys}}</p>
+      {% endif %}
+      <p>Дата и время выполнения - {{result.data}}</p>
+     {% elif enc and dec %}
+      <p>Зашифрованное сообщение - {{enc.result}}</p>
+      <p>Расшифрованное сообщение - {{dec.result}}</p>
+      <p>ключи для: шифрования - {{enc.public_keys}}, дешифрования - {{dec.private_keys}}</p>
+      <p>Дата и время выполнения - {{enc.data}}</p>
+     {% endif %}
+    <p align='center'><a class='btn btn-warning btn-block mt-5' href="{{ url_for('elgamal.elgamal_index') }}">Вернуться к форме</a>
+    </div>
+  </div>
+</div>
+{% endblock body %}

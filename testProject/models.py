@@ -1,6 +1,8 @@
 from app import db
 
 from datetime import datetime
+from random import randint, choice
+from string import ascii_lowercase, digits
 
 from slugify import slugify
 
@@ -10,7 +12,6 @@ article_tabs = db.Table(
     db.Column('article_id', db.Integer, db.ForeignKey('articles.id')),
     db.Column('tag_id', db.Integer, db.ForeignKey('tags.id'))
 )
-
 
 
 class Article(db.Model):
@@ -41,8 +42,8 @@ class Tag(db.Model):
     name = db.Column(db.String(100), nullable=False)
     slug = db.Column(db.String(140), unique=True)
     articles = db.relationship(
-        'Article', 
-        secondary=article_tabs, 
+        'Article',
+        secondary=article_tabs,
         backref='tags')
 
     def __init__(self, *args, **kwargs):
@@ -63,8 +64,8 @@ class Category(db.Model):
     name = db.Column(db.String(100), nullable=False)
     slug = db.Column(db.String(140), unique=True)
     posts = db.relationship(
-        'Article', 
-        backref='category', 
+        'Article',
+        backref='category',
         cascade='all,delete-orphan')
 
     def __init__(self, *args, **kwargs):
@@ -77,3 +78,49 @@ class Category(db.Model):
     def generate_slug(self):
         if self.name:
             self.slug = slugify(self.name)
+
+
+class EncryptedResult(db.Model):
+    __tablename__ = 'encryptedResult'
+    id = db.Column(db.Integer, primary_key=True)
+    slug = db.Column(db.String(100), unique=True)
+    public_keys = db.Column(db.String(100), nullable=False)
+    result = db.Column(db.String(140), nullable=False)
+    data = db.Column(db.DateTime, default=datetime.now())
+
+    def __init__(self, *args, **kwargs):
+        super(EncryptedResult, self).__init__(*args, **kwargs)
+        self.generate_slug()
+
+    def generate_slug(self):
+        while True:
+            slug = ''.join([
+                choice(ascii_lowercase+digits)
+                for _ in range(randint(25, 99))])
+            in_db = EncryptedResult.query.filter_by(slug=slug).first() is not None
+            if not in_db:
+                self.slug = slug
+                break
+
+
+class DecryptedResult(db.Model):
+    __tablename__ = 'decryptedResult'
+    id = db.Column(db.Integer, primary_key=True)
+    slug = db.Column(db.String(100), unique=True)
+    private_keys = db.Column(db.String(100), nullable=False)
+    result = db.Column(db.String(140), nullable=False)
+    data = db.Column(db.DateTime, default=datetime.now())
+
+    def __init__(self, *args, **kwargs):
+        super(DecryptedResult, self).__init__(*args, **kwargs)
+        self.generate_slug()
+
+    def generate_slug(self):
+        while True:
+            slug = ''.join([
+                choice(ascii_lowercase+digits)
+                for _ in range(randint(25, 99))])
+            in_db = DecryptedResult.query.filter_by(slug=slug).first() is not None
+            if not in_db:
+                self.slug = slug
+                break

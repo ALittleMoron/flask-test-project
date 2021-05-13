@@ -25,6 +25,9 @@
             <li class="nav-item">
               <a class="nav-link" href="{{ url_for('news.add_article') }}">Добавить новость</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('elgamal.elgamal_index') }}">Шифрование сообщений</a>
+            </li>
           </ul>
           <form class="d-flex" method="GET">
             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name='q' value={{ request.args.get('q', '') }}>
