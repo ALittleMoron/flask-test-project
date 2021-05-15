@@ -2,3 +2,4 @@
 testVenv/
 __pycache__/
 migrations
+mypy.ini
