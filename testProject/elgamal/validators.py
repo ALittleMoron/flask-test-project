@@ -1,12 +1,12 @@
-from typing import Union
+from typing import Union, List, Tuple
 
 ErrorMessage = str
 
 
 def validate_keys(
         keys: Union[
-            list[int],
-            ]) -> tuple[bool, Union[ErrorMessage, None]]:
+            List[int],
+            ]) -> Tuple[bool, Union[ErrorMessage, None]]:
     if len(keys) in (1, 3, 4):
         is_valid = True
         error = None
