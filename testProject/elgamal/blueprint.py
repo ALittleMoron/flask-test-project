@@ -28,11 +28,13 @@ def elgamal_encrypt():
         for x in range(int(len(keys)**0.5)+1):
             keys = keys.replace(' ', '')
             standart_parse = keys
-        parsed_keys = list(map(int, standart_parse.split(',')))
+        if not is_skip:
+            parsed_keys = list(map(int, standart_parse.split(',')))
+        else:
+            parsed_keys = []
 
         keys = re.findall(r'\d+', keys)
         keys = list(map(int, keys))
-        print(keys, parsed_keys)
         if parsed_keys != keys and not is_skip:
             is_skip = True
             error = f'Вы ввели некорректные ключи. Не все значения - числа.'
