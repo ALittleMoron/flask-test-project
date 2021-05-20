@@ -2,6 +2,7 @@ import re
 from flask import Blueprint, render_template, redirect, url_for, request
 from .forms import ElgamalForm
 from .validators import validate_keys
+from .elGamal import elgamal
 from models import EncryptedResult, DecryptedResult
 from app import db
 
@@ -123,5 +124,4 @@ def elgamal_decrypt_result(dec_slug):
 def elgamal_encrypt_and_decrypt_result(enc_slug, dec_slug):
     enc_result = EncryptedResult.query.filter(EncryptedResult.slug==enc_slug).first()
     dec_result = DecryptedResult.query.filter(DecryptedResult.slug==dec_slug).first()
-    print(enc_result, dec_result)
     return render_template('elgamal/elgamal_result.html', enc=enc_result, dec=dec_result)

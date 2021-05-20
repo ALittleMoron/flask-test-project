@@ -7,7 +7,7 @@ def validate_keys(
         keys: Union[
             List[int],
             ]) -> Tuple[bool, Union[ErrorMessage, None]]:
-    if len(keys) in (1, 3, 4):
+    if len(keys) in (3, 4):
         is_valid = True
         error = None
     else:

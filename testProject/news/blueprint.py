@@ -27,7 +27,7 @@ def add_article():
         return redirect(url_for('news.news_page'))
     else:
         form = ArticleForm()
-    return render_template('news/add_article.html', article=article, form=form)
+    return render_template('news/add_article.html', form=form)
 
 
 @news.route('/update-article/<slug>', methods=["POST", "GET"])

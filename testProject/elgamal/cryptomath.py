@@ -47,7 +47,7 @@ def primitive_root(p_val: int) -> int:
 def co_prime_number(val: int) -> int:
     while True:
         k = random.randrange(3, val-1)
-        if gcd(k, val-1) == 1:
+        if gcd(k, val) == 1:
             break
     return k
 
