@@ -1,9 +1,10 @@
 from random import randrange
+from typing import Tuple
 
 from .cryptomath import generatePrime, primitive_root, find_mod_inverse, co_prime_number
 
 
-def keyGen(keySize: int) -> tuple[tuple[int, int, int], int]:
+def keyGen(keySize: int) -> Tuple[Tuple[int, int, int], int]:
     p = generatePrime(keySize)
     g = primitive_root(p)
     x = co_prime_number(p)

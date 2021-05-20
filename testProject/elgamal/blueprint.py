@@ -2,7 +2,7 @@ import re
 from flask import Blueprint, render_template, redirect, url_for, request
 from .forms import ElgamalForm
 from .validators import validate_keys
-from .elGamal import elgamal
+from .elGamal import elgamal as elGamal_func
 from models import EncryptedResult, DecryptedResult
 from app import db
 
@@ -49,9 +49,9 @@ def elgamal_encrypt():
             if request.form.get('checkElgamalEncrypt') and request.form.get('checkElgamalDecrypt'):
                 pub, priv = list(map(str, keys[:3])), list(map(str, keys[3:]))
                 pub, priv = ', '.join(pub), ', '.join(priv)
-                
-                encrypt = EncryptedResult(public_keys=pub, result=message)
-                decrypt = DecryptedResult(private_keys=priv, result=message)
+                result = elGamal_func(message, keys, True, True)
+                encrypt = EncryptedResult(public_keys=pub, result=str(result[0]))
+                decrypt = DecryptedResult(private_keys=priv, result=str(result[1]))
                 db.session.add(encrypt)
                 db.session.add(decrypt)
                 db.session.commit()
@@ -64,7 +64,8 @@ def elgamal_encrypt():
                         )
                     )
             elif request.form.get('checkElgamalEncrypt'):
-                encrypt = EncryptedResult(public_keys=row_keys, result=message)
+                result = elGamal_func(message, keys, True, False)
+                encrypt = EncryptedResult(public_keys=row_keys, result=str(result[0]))
                 db.session.add(encrypt)
                 db.session.commit()
 
@@ -75,7 +76,10 @@ def elgamal_encrypt():
                         )
                     )
             elif request.form.get('checkElgamalDecrypt'):
-                decrypt = DecryptedResult(private_keys=row_keys, result=message)
+                message = re.findall(r'\(.+?\)', message)
+                result = elGamal_func(message, keys, False, True)
+                
+                decrypt = DecryptedResult(private_keys=row_keys, result=str(result[0]))
                 db.session.add(decrypt)
                 db.session.commit()
                 
