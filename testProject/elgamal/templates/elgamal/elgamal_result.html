@@ -7,10 +7,11 @@
     <div class='mt-5 col-6 offset-3  border border-2 rounded-3 border-secondary'>
       <h3 align='center'>Результат</h3>
      {% if result %}
-      <p>Зашифрованное сообщение - {{result.result}}</p>
       {%if result.private_keys %}
+        <p>Расшифрованное сообщение - {{result.result}}</p>
         <p>Ключи - {{result.private_keys}}</p>
       {% elif result.public_keys %}
+        <p>Зашифрованное сообщение - {{result.result}}</p>
         <p>Ключи - {{result.public_keys}}</p>
       {% endif %}
       <p>Дата и время выполнения - {{result.data}}</p>
